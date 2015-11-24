@@ -1,0 +1,110 @@
+<style>
+  body {padding-top: 70px;}
+  .map { top:0; bottom:0; width:100%; height:700px;}
+  .panel-body {text-align: center;}
+  .container-full {margin: 0 auto;width: 100%;}
+  .edit-input {
+    display:none;
+  }
+  .edit-input-text {
+    display:none;
+    background-color: transparent;
+    /*background-color: #ffffff;*/
+    color:#ccc;
+    border: none;
+    border-color: transparent;
+  }
+  .the-table {
+    table-layout: fixed;
+    word-wrap: break-word;
+  }
+  .container {
+    width: 100%;
+    height: 300px;
+  }  
+</style>
+
+<nav class="navbar navbar-inverse navbar-fixed-top">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+        <span class="sr-only"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="#">맵 지도</a>
+    </div>
+
+    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+      <ul class="nav navbar-nav">				
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="true"> 보고싶은지표 <span class="caret"></span></a>
+          <ul class="dropdown-menu" role="menu">
+            <!-- <li><a href="#" onclick="paint('100','관광공사 100대 맛집')">관광공사 100대 맛집</a></li> -->
+            <li class="divider"></li>
+            
+          </ul>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<div class="container-full">
+
+  <div class="row">
+    <div class="col-md-8">
+       <div class="panel panel-default">     
+       <div class="panel-heading">
+           <i class="fa fa-building"></i>&nbsp; 메인 지도
+        </div>   
+        <div class="panel-body">
+          <div id='map' class='map' style="width:100%;height:800px;position:relative;"></div>
+        </div>
+       </div> 
+    </div>
+    <div class="col-md-4">
+       <div class="panel panel-default">
+       <div class="panel-heading">
+           <i class="fa fa-building"></i>&nbsp; 상세 지도
+        </div>   
+        <div class="panel-body">
+          <div id="focusmap" style="width:100%;height:800px;position:relative;"></div>
+        </div>
+       </div> 
+    </div>
+  </div>  
+  <div class="row">
+    <div class="col-md-12">
+    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+      <!-- map_main -->
+      <ins class="adsbygoogle"
+           style="display:inline-block;width:728px;height:90px"
+           data-ad-client="ca-pub-8638613247413657"
+           data-ad-slot="5305034520"></ins>
+      <script>
+      // (adsbygoogle = window.adsbygoogle || []).push({});
+      </script>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-md-12">
+      <div class="panel panel-default" id="chartss">
+       <div class="panel-heading">
+           <i class="fa fa-building"></i>&nbsp; 월별 거래량 추이
+        </div>   
+        <div class="panel-body container">
+          <nvd3 options="options" data="data" api="api"></nvd3>
+          </canvas> 
+        </div>
+       </div> 
+    </div>
+  </div>
+
+
+
+</div>	
