@@ -8179,18 +8179,14 @@ angular.module('deitel', ['ngRoute','ngSanitize','deitel.directives', 'deitel.se
 
 	$routeProvider
 
-		.when('/s01', {
-			controller: 'SampleCtrl' ,
-			templateUrl: '/views/sample.html'
-		})
-		.when('/s02', {
+		.when('/', {
 			controller: 'OneCtrl' ,
 			templateUrl: '/views/one.html'
 		})
 
-		// .otherwise({
-		// 	redirectTo: '/sample'
-		// });
+		.otherwise({
+			redirectTo: '/'
+		});
 	$locationProvider.html5Mode(true);
 	// $httpProvider.interceptors.push('TokenInterceptor');
 }]);
