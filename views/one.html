@@ -98,7 +98,7 @@
                         <ui-select-match>
                             <span ng-bind="$select.selected.name"></span>
                         </ui-select-match>
-                        <ui-select-choices repeat="item in (fmetric.itemArray | filter: $select.search) track by item.id">
+                        <ui-select-choices repeat="item in (fmetric.itemArray | filter: $select.search) track by item.id" >
                             <span ng-bind="item.name"></span>
                         </ui-select-choices>
                     </ui-select>
@@ -115,7 +115,7 @@
                         <ui-select-match>
                             <span ng-bind="$select.selected.name"></span>
                         </ui-select-match>
-                        <ui-select-choices repeat="item in (farea.itemArray | filter: $select.search) track by item.id">
+                        <ui-select-choices repeat="item in (farea.itemArray | filter: $select.search) track by item.id" > 
                             <span ng-bind="item.name"></span>
                         </ui-select-choices>
                     </ui-select>
@@ -197,7 +197,7 @@
             </div>
             <div class="row">
                 <div class="col-lg-12">
-                    <nvd3 options="options" data="adata" api="aapi"></nvd3>
+                    <nvd3 options="options2" data="adata" api="aapi"></nvd3>
                 </div>
             </div>
         </div>
