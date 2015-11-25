@@ -7168,7 +7168,7 @@ if ( typeof define === 'function' && define.amd ) {
 ;angular.module('deitel.controllers', ['nvd3','ngSanitize', 'ui.select'])
 
 
-.controller('OneCtrl', 
+.controller('OneCtrl', ['$window','$timeout','$location','$scope','$routeParams','$filter','$log','$sampleservice','$burl','$base', 
 	function($window,$timeout,$location,$scope,$routeParams,$filter,$log,$sampleservice,$burl,$base){
 		console.log('begin OneCtrl ....');
 		$scope.startDate = new Date(2014,0,1);
@@ -7738,7 +7738,7 @@ if ( typeof define === 'function' && define.amd ) {
   	}, 500);
   });
 
-}) // end of OneController 
+}]) // end of OneController 
 
 
 
