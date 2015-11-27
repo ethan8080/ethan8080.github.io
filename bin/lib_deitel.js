@@ -7168,7 +7168,570 @@ if ( typeof define === 'function' && define.amd ) {
 ;angular.module('deitel.controllers', ['nvd3','ngSanitize', 'ui.select'])
 
 
-.controller('OneCtrl', ['$window','$timeout','$location','$scope','$routeParams','$filter','$log','$sampleservice','$burl','$base', 
+// .controller('OneCtrl', ['$window','$timeout','$location','$scope','$routeParams','$filter','$log','$sampleservice','$burl','$base', 
+// 	function($window,$timeout,$location,$scope,$routeParams,$filter,$log,$sampleservice,$burl,$base){
+// 		console.log('begin OneCtrl ....');
+// 		$scope.startDate = new Date(2014,0,1);
+// 		$scope.endDate = new Date(2014,12,1);
+
+// 		$scope.ftype = {};
+// 	  $scope.ftype.itemArray = [
+//       {id: 0, name: '아파트'},
+//       {id: 1, name: '연립/다세대'},
+//     ];
+//   	$scope.ftype.selectedItem = $scope.ftype.itemArray[0];
+
+// 		$scope.fmetric = {};
+// 	  $scope.fmetric.itemArray = [
+//       {id: 0, name: '거래량', unit:'건'},
+//       {id: 1, name: '평당가격', unit:'천만원'},
+//     ];
+//   	$scope.fmetric.selectedItem = $scope.fmetric.itemArray[0];
+
+// 		$scope.farea = {};
+// 	  $scope.farea.itemArray = [
+//       {id: 0, name: '서울'},
+//       // {id: 1, name: '경기'},
+//     ];
+//   	$scope.farea.selectedItem = $scope.farea.itemArray[0];
+
+// 		// var center = [37.530101531765394,127.00181143188475]; // 한강 중심 
+
+// 		$scope.map = L.map('map', {
+// 						crs: L.Proj.CRS.TMS.Daum,
+// 						continuousWorld: true,
+// 						worldCopyJump: false,
+// 						zoomControl: true
+// 					}).setView([37.53800253054263,127.01608766689583], 6),
+// 		// console.log($scope.map);
+// 		$scope.map.doubleClickZoom.disable();
+// 		$scope.map.scrollWheelZoom.disable();
+
+
+// 		L.Proj.TileLayer.TMS.provider('DaumMap.Satellite').addTo( $scope.map );
+// 		L.Proj.TileLayer.TMS.provider('DaumMap.Hybrid').addTo( $scope.map );
+// 		// L.Proj.TileLayer.TMS.provider('DaumMap.Street').addTo( $scope.map );
+
+// 		$scope.focusmap = L.map('focusmap', {
+// 						crs: L.Proj.CRS.TMS.Daum,
+// 						continuousWorld: true,
+// 						worldCopyJump: false,
+// 						zoomControl: true
+// 					}).setView([37.49800253054263,127.02608766689583], 6),
+// 		$scope.focusmap.doubleClickZoom.disable();
+// 		$scope.focusmap.scrollWheelZoom.disable();
+
+// 		L.Proj.TileLayer.TMS.provider('DaumMap.Street').addTo( $scope.focusmap );
+// 		// L.Proj.TileLayer.TMS.provider('DaumMap.Hybrid').addTo( $scope.focusmap );
+
+// 		$scope.drawStart = function(){
+// 			console.log('------> drawStart ');
+// 			var promise = $sampleservice.listMainMap();
+// 			promise.then(function(data){
+// 				// $scope.mapdata = JSON.parse(data[0].m1);
+// 				$log.log('----$scope.listMainMap in sampleCtrl -----');
+// 				$log.log(data);
+// 				$timeout(function(){
+// 					$scope.mainmapdata = data;
+// 					$scope.drawMainMap();
+// 				}, 300);
+// 			});
+// 		};
+		
+
+// 		$scope.drawMainMap = function(){
+
+// 			// var ext = d3.extent(data,function(d){ return d.value; });
+// 			// console.log(ext);
+// 			var options = {
+// 				radius: 15,
+// 				opacity: .72,
+// 				duration: 200,
+// 				lng: function(d){ return d.lng; },
+// 				lat: function(d){ return d.lat; },
+// 				value: function(d1){ 
+// 					// console.log(d1); 
+// 					var mm = d3.mean(d1.map(function(d){ return d.o['value'].split(':')[$scope.fmetric.selectedItem.id]; }));
+// 					// console.log(mm);
+// 					return mm; 
+// 				},
+// 				valueFloor:undefined,
+// 				valueCeil: undefined,
+// 				onclick:function(d){ 
+// 					var cclng = d3.mean(d, function(c){ return c.o['lng']; }),
+// 							cclat = d3.mean(d, function(c){ return c.o['lat']; });
+// 							console.log(cclng + ':' + cclat);
+// 					$scope.focusmap.setView([cclat,cclng], 9); 
+// 					// console.log(d); $scope.drawDetailMap(d)
+// 					cclat = Math.round(cclat*100)/100, cclng = Math.round(cclng*100)/100; 
+// 					var ss = $scope.rolledmapdata.filter(function(d){  return parseFloat(d.key)==parseFloat(cclat); })[0]['values'].filter(function(d){ return parseFloat(d.key)==parseFloat(cclng); });
+// 		  		// // console.log(ss[0]['values']); 
+// 		  		try{
+// 		  			$scope.drawDetailMap2(ss[0]['values']);
+// 		  		}catch(e){
+// 		  			console.log('plz center move..')
+// 		  		}
+// 					$timeout(function(){
+// 						$('html, body').animate({
+// 				        scrollTop: $("#schoolmap").offset().top
+// 				    }, 500);
+// 					},500);		
+
+// 				}
+// 			}
+// 			var hexLayer = L.hexbinLayer(options).addTo($scope.map);
+// 			hexLayer.colorScale().range(['#ffeda0','#feb24c','#fc4e2a','#bd0026','#800026']);
+// 			// hexLayer.colorScale().range(['#ffeda0','#fed976','#feb24c','#fd8d3c','#fc4e2a','#e31a1c','#bd0026','#800026']);
+// 			// console.log(data);
+// 			hexLayer.data($scope.mainmapdata);
+
+// 			$scope.rolledmapdata = d3.nest().key(function(d){ 
+// 				return Math.round(d.lat*100)/100 ; 
+// 			}).key(function(d){ 
+// 				return Math.round(d.lng*100)/100 ; 				
+// 			}).entries($scope.mainmapdata);
+// 			console.log($scope.rolledmapdata);
+
+// 		}
+
+
+
+// 		$scope.detailmarkerlst=[];
+// 		$scope.drawDetailMap = function(data){
+// 			$scope.detailmarkerlst.forEach(function(d){
+// 				$scope.focusmap.removeLayer(d);	
+// 			});
+			
+// 			var markers = new L.FeatureGroup();
+// 			var SweetIcon = L.Icon.Label.extend({
+// 				options: {
+// 					iconUrl: 'views/s.png',
+// 					shadowUrl: null,
+// 					iconSize: new L.Point(24, 24),
+// 					iconAnchor: new L.Point(0, 1),
+// 					labelAnchor: new L.Point(26, 0),
+// 					wrapperAnchor: new L.Point(12, 13),
+// 					labelClassName: 'sweet-deal-label'
+// 				}
+// 			});
+
+// 			data.forEach(function(d){
+// 				var info = '<table class="table table-striped table-hover" style="color:#000"><thead><tr class="info" style="color:#000"><td>아파트명</td><td>'+$scope.fmetric.selectedItem.name+'</td></tr></thead><tbody><tr><td><a href="#" onclick="drawChart(\''+d.o['series']+'/'+d.o['si_series']+'/'+d.o['gu_series']+'\')">'+d.o['aptnm']+')'+'</a></td><td>'+Math.round(d.o['value'].split(':')[$scope.fmetric.selectedItem.id])+'</td></tr></tbody></table>';
+// 				markers.addLayer(
+// 					new L.Marker(new L.LatLng(d.o['lat'],d.o['lng']),{ icon: new SweetIcon({ labelText: d.o['aptnm'] }) }).bindPopup(info)
+// 					);
+// 			});
+// 			$scope.detailmarkerlst.push(markers);
+// 			$scope.focusmap.addLayer(markers);
+// 		}
+// 		$scope.detailmarkerlst2=[];
+// 		$scope.drawDetailMap2 = function(data){
+// 			$scope.detailmarkerlst2.forEach(function(d){
+// 				$scope.focusmap.removeLayer(d);	
+// 			});
+			
+// 			var markers = new L.FeatureGroup();
+// 			var SweetIcon = L.Icon.Label.extend({
+// 				options: {
+// 					iconUrl: 'views/s.png',
+// 					shadowUrl: null,
+// 					iconSize: new L.Point(24, 24),
+// 					iconAnchor: new L.Point(0, 1),
+// 					labelAnchor: new L.Point(26, 0),
+// 					wrapperAnchor: new L.Point(12, 13),
+// 					labelClassName: 'sweet-deal-label'
+// 				}
+// 			});
+
+// 			data.forEach(function(d){
+// 				var info = '<table class="table table-striped table-hover" style="color:#000"><thead><tr class="info" style="color:#000"><td>아파트명</td><td>'+$scope.fmetric.selectedItem.name+'</td></tr></thead><tbody><tr><td><a href="#" onclick="drawChart(\''+d['series']+'/'+d['si_series']+'/'+d['gu_series']+'/'+ d['avrprice']+'\')">'+d['aptnm']+')'+'</a></td><td>'+Math.round(d['value'].split(':')[$scope.fmetric.selectedItem.id])+'</td></tr></tbody></table>';
+// 				markers.addLayer(
+// 					new L.Marker(new L.LatLng(d['lat'],d['lng']),{ icon: new SweetIcon({ labelText: d['aptnm'] }) }).bindPopup(info)
+// 					);
+// 			});
+// 			$scope.detailmarkerlst2.push(markers);
+// 			$scope.focusmap.addLayer(markers);
+// 		}
+
+// 		$scope.options = {
+//       chart: {
+//         type: 'multiBarChart',
+//         height: 650,
+//         margin : {
+//           top: 20,
+//           right: 20,
+//           bottom: 60,
+//           left: 65
+//         },
+//         x: function(d){ return (new Date(d[0].substr(0,4), d[0].substr(4,2), d[0].substr(6,2))).getTime() ; },
+//         y: function(d){ return parseFloat(d[1]); },
+//         // average: function(d) { return d.mean; },
+//         color: d3.scale.category10().range(),
+//         transitionDuration: 300,
+//         stacked: false,
+//         duration: 500,
+//         xAxis: {
+//           axisLabel: '기간',
+//           tickFormat: function(d) {
+//             return d3.time.format('%Y%m%d')(new Date(d));
+//           },
+//           showMaxMin: true,
+//           staggerLabels: true
+//         },
+
+//         yAxis: {
+//           axisLabel: '거래량(건)',
+//           tickFormat: function(d){
+//               return d3.format('d')(d);
+//           },
+//           showMaxMin: true,
+//           axisLabelDistance: -20
+//         }
+//       }
+//     };
+
+// 		$window.drawChart = function(data){
+// 			// console.log(data);
+// 			var datecomp = function(b,a){
+// 				return new Date(b.split(':')[0].substr(0,4)+'/'+b.split(':')[0].substr(4,2)+'/01') - new Date(a.split(':')[0].substr(0,4)+'/'+a.split(':')[0].substr(4,2)+'/01');
+// 			};
+
+// 			var my = data.split('/')[0].split(','),
+// 				  si = data.split('/')[1].split(','),
+// 				  gu = data.split('/')[2].split(','),
+// 				  avrprice = data.split('/')[3].split(',');
+// 			$window.drawAreaChart(avrprice); // area chart draw 	  
+// 			si.sort(datecomp), gu.sort(datecomp);		
+// 			// console.log(si);
+// 			var fullm = {}, minm = moment(new Date(parseInt(si[0].split(':')[0].substr(0,4)), parseInt(si[0].split(':')[0].substr(4,2))-1, 1));
+// 			// var fullm = {}, minm = moment($scope.startDate);
+// 			// console.log(si.length);
+// 			for(var k=0;k<si.length;k++){
+// 				fullm[minm.format('YYYYMMDD')] = {si:0,gu:0,my:0};
+// 				minm.add(1,'month');
+// 			}
+
+// 			for(var k=0;k<si.length;k++){
+// 				// console.log(si[k].split(':')[0]+'01');
+// 				fullm[si[k].split(':')[0]+'01']['si'] =  si[k].split(':')[$scope.fmetric.selectedItem.id+1];
+// 			}
+// 			for(var k=0;k<gu.length;k++){
+// 				fullm[gu[k].split(':')[0]+'01']['gu'] =  gu[k].split(':')[$scope.fmetric.selectedItem.id+1];
+// 			}
+// 			for(var k=0;k<my.length;k++){
+// 				fullm[my[k].split(':')[0]+'01']['my'] =  my[k].split(':')[$scope.fmetric.selectedItem.id+1];
+// 			}
+// 			var data = [];
+// 			var s1 =[], s2=[],s3=[];
+// 			Object.keys(fullm).map(function(d){
+// 				s1.push([d, fullm[d]['my']]);
+// 				s2.push([d, fullm[d]['si']]);
+// 				s3.push([d, fullm[d]['gu']]);
+// 			})
+
+// 			$scope.$apply(function(){
+// 				$scope.options.chart.yAxis.axisLabel = $scope.fmetric.selectedItem.name + '('+$scope.fmetric.selectedItem.unit + ')';
+// 				// $scope.data = [];
+// 				$scope.data = [{key:'아파트',values:s1},{key:'시평균',values:s2},{key:'구평균',values:s3}];
+// 				console.log($scope.data);		
+
+// 			});
+
+// 			$timeout(function(){
+// 					$scope.api.update();
+// 					$scope.api.refresh();
+// 					console.log('updated... but not..');
+// 					$('html, body').animate({
+// 			        scrollTop: $("#bchart").offset().top
+// 			    }, 500);
+// 				},500);		
+// 		}
+// 		$scope.options2 = _.clone($scope.options);
+// 		$window.drawAreaChart = function(data){
+// 			console.log('$window.drawAreaChart -----> ')
+// 			console.log(data);
+// 			if($scope.fmetric.selectedItem.id==1){
+// 				$scope.options2.chart.yAxis.axisLabel = '평형별 가격(원)';	
+// 			}
+			
+// 			var aa = d3.nest()
+// 					.key(function(d){ return d.split(':')[0]; })
+// 					.key(function(d){ return d.split(':')[1]; })
+// 					.entries(data);
+// 			console.log(aa);
+// 			var fullm = {}, minm = moment($scope.startDate);
+// 			// console.log(si.length);
+// 			for(var k=0;k<12;k++){
+// 				fullm[minm.format('YYYYMMDD')] = 0;
+// 				minm.add(1,'month');
+// 			}
+// 			$scope.$apply(function(){
+// 				$scope.adata = aa.map(function(a){
+// 					var fu = _.clone(fullm);
+// 					var vv = a.values;
+// 					var nv = [];
+// 					Object.keys(fu).map(function(d){
+// 						var vl = vv.filter(function(v){ return d == v.key+'01'; })[0];
+// 						// console.log(vl);
+// 						var a1 = 0;
+// 						if(vl){
+// 							a1 = vl.values[0].split(':')[$scope.fmetric.selectedItem.id+2]; // 거래량 
+// 						}else{
+// 							a1 = 0;
+// 						}
+// 						nv.push([d, a1]);
+// 					});
+// 					return  {'key':a.key, 'values':nv};
+// 				});
+// 			});
+			
+// 			$timeout(function(){
+// 					$scope.aapi.update();
+// 					$scope.aapi.refresh();
+// 					// console.log('updated... but not..');
+// 					// $('html, body').animate({
+// 			  //       scrollTop: $("#achart").offset().top
+// 			  //   }, 1500);
+// 				},1500);	
+// 		}
+
+
+// 	var mapGeostruc = {
+// 		"type":"FeatureCollection", "features":[], 
+// 		"properties":{
+// 			"fields":{
+// 				"category":{"name":"badcategory","lookup":{"1":"Poor","2":"Fair","3":"Good","4":"Very Good","5":"Excellent"}}
+// 			}, "attribution":"PIZZASTUDIO 2015 Inc."
+// 		}
+// 	},
+//   categoryField = 'badcategory', //This is the fieldname for marker category (used in the pie and legend)
+//   iconField = 'badcategory', //This is the fieldame for marker icon
+//   rmax = 30; //Maximum radius for cluster pies
+//   $scope.metadata = _.clone(mapGeostruc.properties);
+  
+// 	$scope.defineFeature=function(feature, latlng) {
+// 		// console.log('defineFeature---->');
+// 		// console.log(feature);
+// 	  var categoryVal = feature.properties[categoryField],
+// 	    iconVal = feature.properties[categoryField];
+// 	    // console.log(categoryVal+ ':' + iconVal);
+// 	    var myClass = 'marker category-'+categoryVal+' icon-'+iconVal;
+// 	    var myIcon = L.divIcon({
+// 	        className: myClass,
+// 	        iconSize:null
+// 	    });
+// 	    return L.marker(latlng, {icon: myIcon});
+// 	}
+
+// 	$scope.defineFeaturePopup = function(feature, layer) {
+// 		// console.log('defineFeaturePopup---->');
+// 	  var props = feature.properties;
+// 	  // var subwaytxt = props['subway'] && props['subway']!='not' ? ' [' + props['subway'] +']' : '';
+// 		var infocontent = '<table class="table table-striped table-hover text-center"><thead style="color:#fff;"><tr><td>학교명</td><td>주소</td></tr></thead><tbody><tr><td class="success" style="cursor:pointer;text-decoration: underline;">'+props['name']+'</td><td class="danger">'+props['addr']+'</td></tr></tbody></table>';
+// 	  layer.bindPopup(infocontent,{offset: L.point(1,-2), maxWidth: 700});
+// 	}
+
+// 	$scope.defineClusterIcon = function(cluster) {
+// 		// console.log('defineClusterIcon---->');
+//     var children = cluster.getAllChildMarkers(),
+//         n = children.length, //Get number of markers in cluster
+//         strokeWidth = 1, //Set clusterpie stroke width
+//         r = rmax-2*strokeWidth-(n<10?12:n<100?8:n<1000?4:0), //Calculate clusterpie radius...
+//         iconDim = (r+strokeWidth)*2, //...and divIcon dimensions (leaflet really want to know the size)
+//         data = d3.nest() //Build a dataset for the pie chart
+//           .key(function(d) { return d.feature.properties[categoryField]; })
+//           .entries(children, d3.map),
+//         //bake some svg markup
+//         html = $scope.bakeThePie({ 
+//         	data: data,
+//           valueFunc: function(d){ return d.values.length;  }, 
+//           legendFunc: function(d){ 
+//           	var ccc = 0, ooo=0;;
+//           	d.forEach(function(o){
+//         			ccc += o.values.filter(function(a){return a.feature.properties.tci >= 0.3; }).length;
+//         			ooo += o.values.length;
+//           	});
+//           	return ccc/ooo*100;
+//           }, 
+//           strokeWidth: 1,
+//           outerRadius: r,
+//           innerRadius: r-10,
+//           pieClass: 'cluster-pie',
+//           pieLabel: n,
+//           pieLabelClass: 'marker-cluster-pie-label',
+//           pathClassFunc: function(d){return "category-"+d.data.key;},
+//           pathTitleFunc: function(d){return console.log(''); $scope.metadata.fields[categoryField].lookup[d.data.key];}
+//         }),
+//         //Create a new divIcon and assign the svg markup to the html property
+//         myIcon = new L.DivIcon({
+//             html: html,
+//             className: 'marker-cluster', 
+//             iconSize: new L.Point(iconDim, iconDim)
+//         });
+//     return myIcon;
+// 	}
+
+// 	/*function that generates a svg markup for the pie chart*/
+// 	$scope.bakeThePie = function(options) {
+// 		// console.log('bakeThePie---->');
+// 	    /*data and valueFunc are required*/
+// 	    if (!options.data || !options.valueFunc) {
+// 	        return '';
+// 	    }
+// 	    var data = options.data,
+// 	        valueFunc = options.valueFunc,
+// 	        legendFunc = options.legendFunc,
+// 	        r = options.outerRadius?options.outerRadius:28, //Default outer radius = 28px
+// 	        rInner = options.innerRadius?options.innerRadius:r-10, //Default inner radius = r-10
+// 	        strokeWidth = options.strokeWidth?options.strokeWidth:1, //Default stroke is 1
+// 	        pathClassFunc = options.pathClassFunc?options.pathClassFunc:function(){return '';}, //Class for each path
+// 	        pathTitleFunc = options.pathTitleFunc?options.pathTitleFunc:function(){return '';}, //Title for each path
+// 	        pieClass = options.pieClass?options.pieClass:'marker-cluster-pie', //Class for the whole pie
+// 	        pieLabel = options.pieLabel?options.pieLabel:d3.sum(data,valueFunc), //Label for the whole pie
+// 	        // pieLabel = legendFunc?legendFunc:options.pieLabel, 
+// 	        pieLabelClass = options.pieLabelClass?options.pieLabelClass:'marker-cluster-pie-label',//Class for the pie label	        
+// 	        origo = (r+strokeWidth), //Center coordinate
+// 	        w = origo*2, //width and height of the svg element
+// 	        h = w,
+// 	        donut = d3.layout.pie(),
+// 	        arc = d3.svg.arc().innerRadius(rInner).outerRadius(r);
+	        
+// 	    //Create an svg element
+// 	    var svg = document.createElementNS(d3.ns.prefix.svg, 'svg');
+// 	    //Create the pie chart
+// 	    var vis = d3.select(svg)
+// 	        .data([data])
+// 	        .attr('class', pieClass)
+// 	        .attr('width', w)
+// 	        .attr('height', h);
+	        
+// 	    var arcs = vis.selectAll('g.arc')
+// 	        .data(donut.value(valueFunc))
+// 	        .enter().append('svg:g')
+// 	        .attr('class', 'arc')
+// 	        .attr('transform', 'translate(' + origo + ',' + origo + ')');
+	    
+// 	    arcs.append('svg:path')
+// 	        .attr('class', pathClassFunc)
+// 	        .attr('stroke-width', strokeWidth)
+// 	        .attr('d', arc)
+// 	        .append('svg:title')
+// 	          .text(pathTitleFunc);
+
+// 			if(legendFunc(data)	> 1 ){
+// 				vis.append('circle')
+// 						.attr('r', rInner)
+// 						.attr('cx', origo)
+// 						.attr('cy', origo)
+// 						.attr('fill', '#4d4d4d');							
+// 		    vis.append('text')
+// 		        .attr('x',origo)
+// 		        .attr('y',origo)
+// 		        .attr('class', pieLabelClass)
+// 		        .attr('text-anchor', 'middle')
+// 		        .attr('dy','.3em')
+// 		        .attr('fill', 'white')
+// 		        .text(pieLabel);						
+// 			}else{
+// 		    vis.append('text')
+// 		        .attr('x',origo)
+// 		        .attr('y',origo)
+// 		        .attr('class', pieLabelClass)
+// 		        .attr('text-anchor', 'middle')
+// 		        .attr('dy','.3em')
+// 		        .text(pieLabel);					
+// 			}
+
+// 	    return $scope.serializeXmlNode(svg);
+// 	}
+
+// 	/*Helper function*/
+// 	$scope.serializeXmlNode=function(xmlNode) {
+// 		// console.log(xmlNode);
+// 	    if (typeof window.XMLSerializer != "undefined") {
+// 	        return (new window.XMLSerializer()).serializeToString(xmlNode);
+// 	    } else if (typeof xmlNode.xml != "undefined") {
+// 	        return xmlNode.xml;
+// 	    }
+// 	    return "";
+// 	}
+
+// 	$scope.getSchoolData = function(){
+// 		console.log('------> drawSchoolMap ');
+// 		var promise = $sampleservice.listSchoolMap();
+// 		promise.then(function(data){
+// 			// $scope.mapdata = JSON.parse(data[0].m1);
+// 			$log.log('----$scope.listSchoolMap in OneCtrl -----');
+// 			// $log.log(data);
+// 			$timeout(function(){
+// 				$scope.drawSchoolMap(data);
+// 			}, 300);
+// 		});
+// 	};
+
+
+//   $scope.markersref = {'c':{}};	
+//   $scope.drawSchoolMap = function(data){
+//   	console.log('--  begin $scope.drawSchoolMap ----> ');
+//   	// console.log(data);
+//   	// if(!_.isUndefined($scope.markersref['c'].cluster) && !_.isUndefined($scope.markersref['c'].markers))
+// 	  // 	$scope.markersref['c'].cluster.removeLayer($scope.markersref['c'].markers);
+
+//   	var max = d3.extent(data, function(d){ return d.rn;});
+//   	console.log(max);
+//   	$scope.cellgeojson = _.clone(mapGeostruc);
+//   	$scope.rnscale = d3.scale.quantize().domain(max).range(['5','4','3','2','1']);
+//   	$scope.cellgeojson.features = data.map(function(d){ return {"geometry":{"type":"Point","coordinates":[d.lng,d.lat]}, "type":"Feature", "properties":{"badcategory":$scope.rnscale(d.rn),"name":d.name,"addr":d.addr}}});
+//   	console.log($scope.rnscale(1));console.log($scope.rnscale(324));
+//   	// console.log(JSON.stringify(cellgeojson));
+//   	// console.log((cellgeojson));
+//   	$scope.markers = L.geoJson($scope.cellgeojson, {
+// 				pointToLayer: $scope.defineFeature,
+// 				onEachFeature: $scope.defineFeaturePopup
+//     });
+// 		$scope.markerclusters = L.markerClusterGroup({
+// 		  	maxClusterRadius: 2*rmax,
+// 		    iconCreateFunction: $scope.defineClusterIcon
+// 		});
+// 		// console.log($scope.defineClusterIcon);
+// 		// console.log(markerclusters.iconCreateFunction);
+// 		$scope.markerclusters.addTo($scope.focusmap);
+// 		// console.log($scope.markerclusters);
+//     $scope.markerclusters.addLayer($scope.markers);
+//     $scope.markersref['c'].cluster = $scope.markerclusters;
+//     $scope.markersref['c'].markers = $scope.markers;
+//     $scope.focusmap.attributionControl.addAttribution($scope.metadata.attribution);
+
+//   }
+//   $scope.getSchoolData();
+
+
+// 	var dragging = false;
+
+//   $scope.focusmap.on('dragend', function(e){
+//   	if(dragging) {
+//   		return;
+//   	}
+
+//   	$timeout(function(){
+//   		var cc = $scope.focusmap.getCenter();
+//   		var clat = Math.round(cc.lat*100)/100, clng = Math.round(cc.lng*100)/100; 
+//   		console.log(clat +'/'+ clng);  		
+//   		var ss = $scope.rolledmapdata.filter(function(d){  return parseFloat(d.key)==clat; })[0]['values'].filter(function(d){ return parseFloat(d.key)==clng; });
+//   		// console.log(ss[0]['values']); 
+//   		try{
+//   			$scope.drawDetailMap2(ss[0]['values']);
+//   		}catch(e){
+//   			console.log('plz center move..')
+//   		}
+  		
+
+//   	}, 500);
+//   });
+
+// }]) // end of OneController 
+
+.controller('TwoCtrl', ['$window','$timeout','$location','$scope','$routeParams','$filter','$log','$sampleservice','$burl','$base', 
 	function($window,$timeout,$location,$scope,$routeParams,$filter,$log,$sampleservice,$burl,$base){
 		console.log('begin OneCtrl ....');
 		$scope.startDate = new Date(2014,0,1);
@@ -7176,8 +7739,8 @@ if ( typeof define === 'function' && define.amd ) {
 
 		$scope.ftype = {};
 	  $scope.ftype.itemArray = [
-      {id: 0, name: '아파트'},
-      {id: 1, name: '연립/다세대'},
+      {id: 0, name: '매매'},
+      // {id: 1, name: '전월세'},
     ];
   	$scope.ftype.selectedItem = $scope.ftype.itemArray[0];
 
@@ -7186,16 +7749,7 @@ if ( typeof define === 'function' && define.amd ) {
       {id: 0, name: '거래량', unit:'건'},
       {id: 1, name: '평당가격', unit:'천만원'},
     ];
-  	$scope.fmetric.selectedItem = $scope.fmetric.itemArray[0];
-  	// $scope.refreshFmetric = function(d){
-
-  	// };
-  	// $scope.refreshFtype = function(d){
-
-  	// };
-  	// $scope.refreshFarea = function(d){
-
-  	// };
+  	$scope.fmetric.selectedItem = $scope.fmetric.itemArray[1];
 
 		$scope.farea = {};
 	  $scope.farea.itemArray = [
@@ -7206,12 +7760,12 @@ if ( typeof define === 'function' && define.amd ) {
 
 		// var center = [37.530101531765394,127.00181143188475]; // 한강 중심 
 
-		$scope.map = L.map('map', {
+		$scope.map = L.map('_map', {
 						crs: L.Proj.CRS.TMS.Daum,
 						continuousWorld: true,
 						worldCopyJump: false,
 						zoomControl: true
-					}).setView([37.53800253054263,127.01608766689583], 6),
+					}).setView([37.53800253054263,127.01608766689583], 5),
 		// console.log($scope.map);
 		$scope.map.doubleClickZoom.disable();
 		$scope.map.scrollWheelZoom.disable();
@@ -7221,7 +7775,38 @@ if ( typeof define === 'function' && define.amd ) {
 		L.Proj.TileLayer.TMS.provider('DaumMap.Hybrid').addTo( $scope.map );
 		// L.Proj.TileLayer.TMS.provider('DaumMap.Street').addTo( $scope.map );
 
-		$scope.focusmap = L.map('focusmap', {
+		$scope.schoolmap = L.map('_schoolmap', {
+						crs: L.Proj.CRS.TMS.Daum,
+						continuousWorld: true,
+						worldCopyJump: false,
+						zoomControl: true
+					}).setView([37.53800253054263,127.01608766689583], 5),
+		// console.log($scope.schoolmap);
+		$scope.schoolmap.doubleClickZoom.disable();
+		$scope.schoolmap.scrollWheelZoom.disable();
+
+
+		L.Proj.TileLayer.TMS.provider('DaumMap.Satellite').addTo( $scope.schoolmap );
+		L.Proj.TileLayer.TMS.provider('DaumMap.Hybrid').addTo( $scope.schoolmap );
+		// L.Proj.TileLayer.TMS.provider('DaumMap.Street').addTo( $scope.map );
+
+		$scope.gasungbimap = L.map('_gasungbimap', {
+						crs: L.Proj.CRS.TMS.Daum,
+						continuousWorld: true,
+						worldCopyJump: false,
+						zoomControl: true
+					}).setView([37.53800253054263,127.01608766689583], 5),
+		// console.log($scope.schoolmap);
+		$scope.gasungbimap.doubleClickZoom.disable();
+		$scope.gasungbimap.scrollWheelZoom.disable();
+
+
+		L.Proj.TileLayer.TMS.provider('DaumMap.Satellite').addTo( $scope.gasungbimap );
+		L.Proj.TileLayer.TMS.provider('DaumMap.Hybrid').addTo( $scope.gasungbimap );
+		// L.Proj.TileLayer.TMS.provider('DaumMap.Street').addTo( $scope.map );
+
+
+		$scope.focusmap = L.map('_focusmap', {
 						crs: L.Proj.CRS.TMS.Daum,
 						continuousWorld: true,
 						worldCopyJump: false,
@@ -7243,6 +7828,8 @@ if ( typeof define === 'function' && define.amd ) {
 				$timeout(function(){
 					$scope.mainmapdata = data;
 					$scope.drawMainMap();
+					$scope.getSchoolData();
+					$scope.getGasungbiMap();
 				}, 300);
 			});
 		};
@@ -7274,7 +7861,7 @@ if ( typeof define === 'function' && define.amd ) {
 					// console.log(d); $scope.drawDetailMap(d)
 					cclat = Math.round(cclat*100)/100, cclng = Math.round(cclng*100)/100; 
 					var ss = $scope.rolledmapdata.filter(function(d){  return parseFloat(d.key)==parseFloat(cclat); })[0]['values'].filter(function(d){ return parseFloat(d.key)==parseFloat(cclng); });
-		  		// console.log(ss[0]['values']);
+		  		// // console.log(ss[0]['values']); 
 		  		try{
 		  			$scope.drawDetailMap2(ss[0]['values']);
 		  		}catch(e){
@@ -7282,7 +7869,7 @@ if ( typeof define === 'function' && define.amd ) {
 		  		}
 					$timeout(function(){
 						$('html, body').animate({
-				        scrollTop: $("#schoolmap").offset().top
+				        scrollTop: $("#focuslmap").offset().top
 				    }, 500);
 					},500);		
 
@@ -7301,38 +7888,125 @@ if ( typeof define === 'function' && define.amd ) {
 			}).entries($scope.mainmapdata);
 			console.log($scope.rolledmapdata);
 
-		}
+		} // end of drawMainMap()
 
+		$scope.drawSchoolGradeMap = function(__data){
+			console.log('$scope.drawSchoolGradeMap--->');
+			console.log(__data);
+			var options = {
+				radius: 15,
+				opacity: .72,
+				duration: 200,
+				lng: function(d){ return d.lng; },
+				lat: function(d){ return d.lat; },
+				value: function(d1){ 
+					// console.log(d1); 
+					var mm = d3.mean(d1.map(function(d){ return d.o['rn']; }));
+					// console.log(mm);
+					return mm; 
+				},
+				valueFloor:undefined,
+				valueCeil: undefined,
+				onclick:function(d){ 
+					var cclng = d3.mean(d, function(c){ return c.o['lng']; }),
+							cclat = d3.mean(d, function(c){ return c.o['lat']; });
+							console.log(cclng + ':' + cclat);
+					$scope.focusmap.setView([cclat,cclng], 9); 
+					// console.log(d); $scope.drawDetailMap(d)
+					cclat = Math.round(cclat*100)/100, cclng = Math.round(cclng*100)/100; 
+					var ss = $scope.rolledmapdata.filter(function(d){  return parseFloat(d.key)==parseFloat(cclat); })[0]['values'].filter(function(d){ return parseFloat(d.key)==parseFloat(cclng); });
+		  		// console.log(ss[0]['values']); 
+		  		try{
+		  			$scope.drawDetailMap2(ss[0]['values']);
+		  		}catch(e){
+		  			console.log('plz center move..')
+		  		}
+					$timeout(function(){
+						$('html, body').animate({
+				        scrollTop: $("#focusmap").offset().top
+				    }, 500);
+					},500);		
 
-
-		$scope.detailmarkerlst=[];
-		$scope.drawDetailMap = function(data){
-			$scope.detailmarkerlst.forEach(function(d){
-				$scope.focusmap.removeLayer(d);	
-			});
-			
-			var markers = new L.FeatureGroup();
-			var SweetIcon = L.Icon.Label.extend({
-				options: {
-					iconUrl: 'views/s.png',
-					shadowUrl: null,
-					iconSize: new L.Point(24, 24),
-					iconAnchor: new L.Point(0, 1),
-					labelAnchor: new L.Point(26, 0),
-					wrapperAnchor: new L.Point(12, 13),
-					labelClassName: 'sweet-deal-label'
 				}
-			});
+			}
+			var hexLayer = L.hexbinLayer(options).addTo($scope.schoolmap);
+			hexLayer.colorScale().range(['#800026','#bd0026','#fc4e2a','#feb24c','#ffeda0']);
+			// hexLayer.colorScale().range(['#ffeda0','#fed976','#feb24c','#fd8d3c','#fc4e2a','#e31a1c','#bd0026','#800026']);
+			// console.log(data);
+			hexLayer.data(__data);
 
-			data.forEach(function(d){
-				var info = '<table class="table table-striped table-hover" style="color:#000"><thead><tr class="info" style="color:#000"><td>아파트명</td><td>'+$scope.fmetric.selectedItem.name+'</td></tr></thead><tbody><tr><td><a href="#" onclick="drawChart(\''+d.o['series']+'/'+d.o['si_series']+'/'+d.o['gu_series']+'\')">'+d.o['aptnm']+')'+'</a></td><td>'+Math.round(d.o['value'].split(':')[$scope.fmetric.selectedItem.id])+'</td></tr></tbody></table>';
-				markers.addLayer(
-					new L.Marker(new L.LatLng(d.o['lat'],d.o['lng']),{ icon: new SweetIcon({ labelText: d.o['aptnm'] }) }).bindPopup(info)
-					);
+		} // end of drawSchoolMap()
+
+		$scope.getGasungbiMap = function(){
+			console.log('------> getGasungbiMap ');
+			var promise = $sampleservice.listGasungbiMap();
+			promise.then(function(data){
+				// $scope.mapdata = JSON.parse(data[0].m1);
+				$log.log('----$scope.listGasungbiMap in OneCtrl -----');
+				// $log.log(data);
+				$timeout(function(){
+					$scope.drawGasungbiMap(data);
+				}, 300);
 			});
-			$scope.detailmarkerlst.push(markers);
-			$scope.focusmap.addLayer(markers);
+		} // end of getGasungbiMap
+
+		$scope.drawGasungbiMap = function(__data){
+			// data
+			console.log('$scope.drawGasungbiMap --> ');
+			console.log(__data);
+			// refine rn dt
+			var aptmx = d3.extent(__data.filter(function(d){ return d['typef']=='apt'; }), function(d){ return d['rn']}),
+				  schmx = d3.extent(__data.filter(function(d){ return d['typef']=='sch'; }), function(d){ return d['rn']});
+			var aptscale = d3.scale.linear().domain(aptmx).range([1,100]),
+					schscale = d3.scale.linear().domain(schmx).range([1,100]);
+						  
+			var options = {
+				radius: 15,
+				opacity: .72,
+				duration: 200,
+				lng: function(d){ return d.lng; },
+				lat: function(d){ return d.lat; },
+				value: function(d1){ 
+					// console.log(d1); 
+					var aptmm = d3.mean(d1.filter(function(d){ return d.o['typef']=='apt'; }).map(function(d){ return aptscale(d.o['rn']); }));
+					var schmm = d3.mean(d1.filter(function(d){ return d.o['typef']=='sch'; }).map(function(d){ return schscale(d.o['rn']); }));
+					// console.log(aptmm + ':' +schmm);
+					return (_.isUndefined(aptmm)?1:aptmm)+ (_.isUndefined(schmm)?1:schmm); 
+				},
+				valueFloor:undefined,
+				valueCeil: undefined,
+				onclick:function(d){ 
+					var cclng = d3.mean(d, function(c){ return c.o['lng']; }),
+							cclat = d3.mean(d, function(c){ return c.o['lat']; });
+							console.log(cclng + ':' + cclat);
+					$scope.focusmap.setView([cclat,cclng], 9); 
+					// console.log(d); $scope.drawDetailMap(d)
+					cclat = Math.round(cclat*100)/100, cclng = Math.round(cclng*100)/100; 
+					var ss = $scope.rolledmapdata.filter(function(d){  return parseFloat(d.key)==parseFloat(cclat); })[0]['values'].filter(function(d){ return parseFloat(d.key)==parseFloat(cclng); });
+		  		// console.log(ss[0]['values']); 
+		  		try{
+		  			$scope.drawDetailMap2(ss[0]['values']);
+		  		}catch(e){
+		  			console.log('plz center move..')
+		  		}
+					$timeout(function(){
+						$('html, body').animate({
+				        scrollTop: $("#focusmap").offset().top
+				    }, 500);
+					},500);		
+
+				}
+			}
+			var hexLayer = L.hexbinLayer(options).addTo($scope.gasungbimap);
+			hexLayer.colorScale().range(['#800026','#bd0026','#fc4e2a','#feb24c','#ffeda0']);
+			// hexLayer.colorScale().range(['#ffeda0','#fed976','#feb24c','#fd8d3c','#fc4e2a','#e31a1c','#bd0026','#800026']);
+			// console.log(data);
+			hexLayer.data(__data);
+
 		}
+
+
+
 		$scope.detailmarkerlst2=[];
 		$scope.drawDetailMap2 = function(data){
 			$scope.detailmarkerlst2.forEach(function(d){
@@ -7360,7 +8034,7 @@ if ( typeof define === 'function' && define.amd ) {
 			});
 			$scope.detailmarkerlst2.push(markers);
 			$scope.focusmap.addLayer(markers);
-		}
+		} // end of drawDetailMap2 
 
 		$scope.options = {
       chart: {
@@ -7397,7 +8071,7 @@ if ( typeof define === 'function' && define.amd ) {
           axisLabelDistance: -20
         }
       }
-    };
+    }; // end of $scope.options
 
 		$window.drawChart = function(data){
 			// console.log(data);
@@ -7454,7 +8128,9 @@ if ( typeof define === 'function' && define.amd ) {
 			        scrollTop: $("#bchart").offset().top
 			    }, 500);
 				},500);		
-		}
+		} // end of $window.drawChart
+
+
 		$scope.options2 = _.clone($scope.options);
 		$window.drawAreaChart = function(data){
 			console.log('$window.drawAreaChart -----> ')
@@ -7502,7 +8178,7 @@ if ( typeof define === 'function' && define.amd ) {
 			  //       scrollTop: $("#achart").offset().top
 			  //   }, 1500);
 				},1500);	
-		}
+		} // end of $window.drawAreaChart
 
 
 	var mapGeostruc = {
@@ -7530,15 +8206,15 @@ if ( typeof define === 'function' && define.amd ) {
 	        iconSize:null
 	    });
 	    return L.marker(latlng, {icon: myIcon});
-	}
+	} // end of $scope.defineFeature
 
 	$scope.defineFeaturePopup = function(feature, layer) {
 		// console.log('defineFeaturePopup---->');
 	  var props = feature.properties;
 	  // var subwaytxt = props['subway'] && props['subway']!='not' ? ' [' + props['subway'] +']' : '';
-		var infocontent = '<table class="table table-striped table-hover text-center"><thead style="color:#fff;"><tr><td>학교명</td><td>주소</td></tr></thead><tbody><tr><td class="success" style="cursor:pointer;text-decoration: underline;">'+props['name']+'</td><td class="danger">'+props['addr']+'</td></tr></tbody></table>';
+		var infocontent = '<table class="table table-striped table-hover" style="color:#000"><thead style="color:#fff;"><tr><td>학교명</td><td>주소</td><td>순위</td></tr></thead><tbody><tr><td class="success" style="cursor:pointer;text-decoration: underline;">'+props['name']+'</td><td class="danger">'+props['addr']+'</td><td class="waring">'+props['rank']+'</td></tr></tbody></table>';
 	  layer.bindPopup(infocontent,{offset: L.point(1,-2), maxWidth: 700});
-	}
+	} // end of $scope.defineFeaturePopup
 
 	$scope.defineClusterIcon = function(cluster) {
 		// console.log('defineClusterIcon---->');
@@ -7578,7 +8254,7 @@ if ( typeof define === 'function' && define.amd ) {
             iconSize: new L.Point(iconDim, iconDim)
         });
     return myIcon;
-	}
+	} // end of $scope.defineClusterIcon
 
 	/*function that generates a svg markup for the pie chart*/
 	$scope.bakeThePie = function(options) {
@@ -7652,7 +8328,7 @@ if ( typeof define === 'function' && define.amd ) {
 			}
 
 	    return $scope.serializeXmlNode(svg);
-	}
+	} // end of $scope.bakeThePie
 
 	/*Helper function*/
 	$scope.serializeXmlNode=function(xmlNode) {
@@ -7663,20 +8339,21 @@ if ( typeof define === 'function' && define.amd ) {
 	        return xmlNode.xml;
 	    }
 	    return "";
-	}
+	} // end of $scope.serializeXmlNode
 
 	$scope.getSchoolData = function(){
 		console.log('------> drawSchoolMap ');
 		var promise = $sampleservice.listSchoolMap();
 		promise.then(function(data){
 			// $scope.mapdata = JSON.parse(data[0].m1);
-			$log.log('----$scope.listSchoolMap in OneCtrl -----');
+			$log.log('----$scope.getSchoolData in OneCtrl -----');
 			// $log.log(data);
 			$timeout(function(){
 				$scope.drawSchoolMap(data);
+				$scope.drawSchoolGradeMap(data);				
 			}, 300);
 		});
-	};
+	}; // end of $scope.getSchoolData
 
 
   $scope.markersref = {'c':{}};	
@@ -7690,7 +8367,7 @@ if ( typeof define === 'function' && define.amd ) {
   	console.log(max);
   	$scope.cellgeojson = _.clone(mapGeostruc);
   	$scope.rnscale = d3.scale.quantize().domain(max).range(['5','4','3','2','1']);
-  	$scope.cellgeojson.features = data.map(function(d){ return {"geometry":{"type":"Point","coordinates":[d.lng,d.lat]}, "type":"Feature", "properties":{"badcategory":$scope.rnscale(d.rn),"name":d.name,"addr":d.addr}}});
+  	$scope.cellgeojson.features = data.map(function(d){ return {"geometry":{"type":"Point","coordinates":[d.lng,d.lat]}, "type":"Feature", "properties":{"badcategory":$scope.rnscale(d.rn),"name":d.name,"addr":d.addr,"rank":d.rn}}});
   	console.log($scope.rnscale(1));console.log($scope.rnscale(324));
   	// console.log(JSON.stringify(cellgeojson));
   	// console.log((cellgeojson));
@@ -7711,8 +8388,9 @@ if ( typeof define === 'function' && define.amd ) {
     $scope.markersref['c'].markers = $scope.markers;
     $scope.focusmap.attributionControl.addAttribution($scope.metadata.attribution);
 
-  }
-  $scope.getSchoolData();
+  } // end of $scope.drawSchoolMap
+
+  // $scope.getSchoolData();
 
 
 	var dragging = false;
@@ -7727,7 +8405,7 @@ if ( typeof define === 'function' && define.amd ) {
   		var clat = Math.round(cc.lat*100)/100, clng = Math.round(cc.lng*100)/100; 
   		console.log(clat +'/'+ clng);  		
   		var ss = $scope.rolledmapdata.filter(function(d){  return parseFloat(d.key)==clat; })[0]['values'].filter(function(d){ return parseFloat(d.key)==clng; });
-  		console.log(ss[0]['values']);
+  		// console.log(ss[0]['values']); 
   		try{
   			$scope.drawDetailMap2(ss[0]['values']);
   		}catch(e){
@@ -7738,7 +8416,7 @@ if ( typeof define === 'function' && define.amd ) {
   	}, 500);
   });
 
-}]) // end of OneController 
+}]) // end of TwoController 
 
 
 
@@ -7920,6 +8598,25 @@ if ( typeof define === 'function' && define.amd ) {
 		return deferred.promise;
 	};
 
+	obj.listGasungbiMap = function(q, suffix){
+		var method = 'GET';
+		var that = this;
+		var deferred = $q.defer();
+		// console.log('ap_group suffix is ' + suffix);
+		var url = $burl.get('/data') + '/jj05.json';
+		// console.log('$baseService url is ' + url);
+
+		that.query(q, url, method, function(q, data){
+			console.log(that.keyPrefix + ' get success ');
+			console.log(data);
+			console.log('--------------------------');
+			deferred.resolve(data);
+		}, function(q){
+			console.log(that.keyPrefix + ' get failure error q is ' + q);
+		});
+
+		return deferred.promise;
+	};
 
 	return obj;
 });
@@ -7989,9 +8686,13 @@ angular.module('deitel', ['ngRoute','ngSanitize','deitel.directives', 'deitel.se
 
 	$routeProvider
 
+		// .when('/', {
+		// 	controller: 'OneCtrl' ,
+		// 	templateUrl: '/views/one.html'
+		// })
 		.when('/', {
-			controller: 'OneCtrl' ,
-			templateUrl: '/views/one.html'
+			controller: 'TwoCtrl' ,
+			templateUrl: '/views/two.html'
 		})
 
 		.otherwise({

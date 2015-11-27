@@ -22,23 +22,23 @@
                         <a class="page-scroll" href="#guide">안내</a>
                     </li>
                     <li>
-                        <a class="page-scroll" href="#filter">조건선택</a>
+                        <a class="page-scroll" href="#filter">보고싶은지역</a>
                     </li>
                     <li>
-                        <a class="page-scroll" href="#realmap">부동산지도</a>
+                        <a class="page-scroll" href="#realmap">부동산가격지도</a>
                     </li>
                     <li>
                         <a class="page-scroll" href="#schoolmap">학교성적지도</a>
+                    </li>
+                    <li>
+                        <a class="page-scroll" href="#gasungbimap">가성비지도</a>
                     </li>
                     <li>
                         <a class="page-scroll" href="#bchart">월별비교</a>
                     </li>
                     <li>
                         <a class="page-scroll" href="#achart">평형별비교</a>
-                    </li>
-                    <li>
-                        <a class="page-scroll" href="#about">회사소개</a>
-                    </li>
+                    </li>                    
                     <li>
                         <a class="page-scroll" href="#contact">연락처</a>
                     </li>
@@ -65,46 +65,30 @@
         <div class="container">
             <div class="row">
                 <div class="col-lg-12 text-center">
-                    <h2 class="section-heading">부동산조건선택</h2>
-                    <h3 class="section-subheading text-muted">여기서는 아파트/다세대, 매매/전월세 및 지역을 선택합니다.<br/>(현재는 아파트, 매매, 서울 지역만 제공됩니다.)  </h3>
+                    <h2 class="section-heading">보고싶은지역</h2>
+                    <h3 class="section-subheading text-muted"> 보고싶은 지역을 선택하세요. </h3>
                 </div>
             </div>
             <div class="row text-center">
-                <div class="col-md-3">
-                    <span class="fa-stack fa-4x">
-                        <i class="fa fa-circle fa-stack-2x text-primary"></i>
-                        <i class="fa fa-building fa-stack-1x fa-inverse"></i>
-                    </span>
-                    <h4 class="service-heading">아파트/연립다세대</h4>
-                    <!-- <p class="text-muted"> -->
-                    <ui-select ng-model="ftype.selectedItem">
-                        <ui-select-match>
-                            <span ng-bind="$select.selected.name"></span>
-                        </ui-select-match>
-                        <ui-select-choices repeat="item in (ftype.itemArray | filter: $select.search) track by item.id">
-                            <span ng-bind="item.name"></span>
-                        </ui-select-choices>
-                    </ui-select>
-                    <!-- </p> -->
-                </div>
-                <div class="col-md-3">
+                
+                <div class="col-md-4">
                     <span class="fa-stack fa-4x">
                         <i class="fa fa-circle fa-stack-2x text-primary"></i>
                         <i class="fa fa-key fa-stack-1x fa-inverse"></i>
                     </span>
                     <h4 class="service-heading">매매/전월세</h4>
                     <!-- <p class="text-muted"> -->
-                    <ui-select ng-model="fmetric.selectedItem">
+                    <ui-select ng-model="ftype.selectedItem">
                         <ui-select-match>
                             <span ng-bind="$select.selected.name"></span>
                         </ui-select-match>
-                        <ui-select-choices repeat="item in (fmetric.itemArray | filter: $select.search) track by item.id" >
+                        <ui-select-choices repeat="item in (ftype.itemArray | filter: $select.search) track by item.id" >
                             <span ng-bind="item.name"></span>
                         </ui-select-choices>
                     </ui-select>
                     <!-- </p> -->
                 </div>
-                <div class="col-md-3">
+                <div class="col-md-4">
                     <span class="fa-stack fa-4x">
                         <i class="fa fa-circle fa-stack-2x text-primary"></i>
                         <i class="fa fa-globe fa-stack-1x fa-inverse"></i>
@@ -121,13 +105,13 @@
                     </ui-select>
                     <!-- </p> -->
                 </div>
-                <div class="col-md-3">
+                <div class="col-md-4">
                     <span class="fa-stack fa-4x">
                         <i class="fa fa-circle fa-stack-2x text-primary"></i>
                         <i class="fa fa-map-marker fa-stack-1x fa-inverse"></i>
                     </span>
                     <h4 class="service-heading">&nbsp;</h4>
-                    <a href="#realmap" ng-click="drawStart()" class="page-scroll btn btn-xl">부동산지도 보기</a>
+                    <a href="#realmap" ng-click="drawStart()" class="page-scroll btn btn-xl">지도 보기</a>
                 </div>
             </div>
         </div>
@@ -138,38 +122,129 @@
         <div class="container">
             <div class="row">
                 <div class="col-lg-12 text-center">
-                    <h2 class="section-heading">지도</h2>
-                    <h3 class="section-subheading text-muted">노란색에서 빨강색 육각형이 있는데, 빨강색이 많은 육각형이 거래량 또는 평균가격이 높은 지역입니다.
-                    <p class="text-muted">보고싶은 지역 육각형을 클릭해보세요.</p>
+                    <h2 class="section-heading">부동산 가격지도</h2>
+                    <h3 class="section-subheading text-muted">노란색에서 빨강색 육각형이 있는데, 빨강색이 많은 육각형이 평당가격이 높은 지역입니다.
+                    <p class="text-muted">보고싶은 지역 육각형을 클릭하시면 아파트 가격과 학교 성적 상세지도를 보실 수 있습니다.</p>
                     </h3> 
                 </div>
             </div>
             <div class="row">
                 <div class="col-lg-12">
-                    <div id='map' class='map' style="width:100%;height:700px;position:relative;"></div>
+                    <div id='_map' style="width:100%;height:600px;position:relative;"></div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+                    <!-- ethan8080_main1 -->
+                    <ins class="adsbygoogle"
+                         style="display:inline-block;width:728px;height:90px"
+                         data-ad-client="ca-pub-8638613247413657"
+                         data-ad-slot="1216998120"></ins>
+                    <script>
+                    (adsbygoogle = window.adsbygoogle || []).push({});
+                    </script>
                 </div>
             </div>
         </div>
     </section>
     <!-- Portfolio Grid Section -->
-    <section id="schoolmap" class="bg-light-gray">
+    <section id="schoolmap">
         <div class="container">
             <div class="row">
                 <div class="col-lg-12 text-center">
-                    <h2 class="section-heading">학교성적지도와 아파트/단지상세지도</h2>
-                    <h3 class="section-subheading text-muted">녹색, 노란색, 귤색, 주황색, 빨강색 점들은 모두 중학교를 나타냅니다. 녹색에서 빨강색으로 갈수록 보통이상 학력이 높은 학교입니다. <br/>(현재는 중학교만 제공되지만 초등/고등학교는 추후 제공예정입니다.) <br/> 아파트를 클릭하면 거래량과 평균가격을 확인할 수 있고 추세나 최근 정보를 보고 싶으면 팝업창의 아파트 이름을 클릭하세요.
-                    </h3>
+                    <h2 class="section-heading">학교 성적지도</h2>
+                    <h3 class="section-subheading text-muted">노란색에서 빨강색 육각형이 있는데, 빨강색이 많은 육각형이 공부 잘하는 학교가 많은 지역 입니다. </h3>
+                    <p class="text-muted">보고싶은 지역 육각형을 클릭하시면 아파트 가격과 학교성적 상세지도를 보실 수 있습니다.</p>
                 </div>
             </div>
             <div class="row">
                 <div class="col-lg-12">
-                    <div id="focusmap" style="width:100%;height:700px;position:relative;"></div>
+                    <div id="_schoolmap" style="width:100%;height:600px;position:relative;"></div>
                 </div>
             </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+                    <!-- ethan8080_main2 -->
+                    <ins class="adsbygoogle"
+                         style="display:inline-block;width:728px;height:90px"
+                         data-ad-client="ca-pub-8638613247413657"
+                         data-ad-slot="2693731327"></ins>
+                    <script>
+                    (adsbygoogle = window.adsbygoogle || []).push({});
+                    </script>
+                </div>
+            </div>
+
+        </div>
+
+    </section>
+    <!-- Portfolio Grid Section -->
+    <section id="gasungbimap" class="bg-light-gray">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12 text-center">
+                    <h2 class="section-heading">가성비 지도</h2>
+                    <h3 class="section-subheading text-muted">노란색에서 빨강색 육각형이 있는데, 빨강색이 많은 육각형일수록 공부는 잘하지만 집값이 싼 지역입니다.</h3>
+                    <p class="text-muted">보고싶은 지역 육각형을 클릭하시면 아파트 가격과 학교성적 상세지도를 보실 수 있습니다.</p>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-12">
+                    <div id="_gasungbimap" style="width:100%;height:600px;position:relative;"></div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+                    <!-- ethan8080_main3 -->
+                    <ins class="adsbygoogle"
+                         style="display:inline-block;width:728px;height:90px"
+                         data-ad-client="ca-pub-8638613247413657"
+                         data-ad-slot="4170464523"></ins>
+                    <script>
+                    (adsbygoogle = window.adsbygoogle || []).push({});
+                    </script>
+                </div>
+            </div>
+
         </div>
     </section>
 
-        <!-- Portfolio Grid Section -->
+    <!-- Portfolio Grid Section -->
+    <section id="focusmap">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12 text-center">
+                    <h2 class="section-heading">아파트가격 및 학교성적 상세지도</h2>
+                    <h3 class="section-subheading text-muted">노란색에서 빨강색 육각형이 있는데, 빨강색이 많은 육각형이 거래량 또는 평균가격이 높은 지역입니다.</h3>
+                    <p class="text-muted">아파트를 클릭하시면 평당 가격을 볼 수 있고, 학교를 클릭하시면 지역 내 순위를 보실 수 있습니다.</p>
+                    <p class="text-muted">아파트 팝업창의 이름을 클릭하면 가격 추이를 그래프로 보실 수 있습니다.</p>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-12">
+                    <div id="_focusmap" class='map' style="width:100%;height:600px;position:relative;"></div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+                    <!-- ethan8080_main4 -->
+                    <ins class="adsbygoogle"
+                         style="display:inline-block;width:728px;height:90px"
+                         data-ad-client="ca-pub-8638613247413657"
+                         data-ad-slot="5647197728"></ins>
+                    <script>
+                    (adsbygoogle = window.adsbygoogle || []).push({});
+                    </script>
+                </div>
+            </div>
+            
+        </div>
+    </section>
+    <!-- Portfolio Grid Section -->
     <section id="bchart" class="bg-light-gray">
         <div class="container">
             <div class="row">
@@ -187,7 +262,7 @@
     </section>
     
     <!-- Portfolio Grid Section -->
-    <section id="achart" class="bg-light-gray">
+    <section id="achart">
         <div class="container">
             <div class="row">
                 <div class="col-lg-12 text-center">
@@ -202,40 +277,7 @@
             </div>
         </div>
     </section>
-
-    <!-- About Section -->
-    <section id="about">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-12 text-center">
-                    <h2 class="section-heading">회사소개</h2>
-                    <h3 class="section-subheading text-muted">자기 자신이 해낸 것을 즐기는, 그리고 자기 자신이 하고 있는 것을 즐기는 사람은 행복한 사람이다. - 괴테</h3>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-lg-12">
-                    <ul class="timeline">
-                        <li>
-                            <div class="timeline-image">
-                                <img class="img-circle img-responsive" src="https://avatars2.githubusercontent.com/u/3013882?v=3&s=400" alt="">
-                            </div>
-                            <div class="timeline-panel">
-                                <div class="timeline-heading">
-                                    <h4>2015</h4>
-                                    <h4 class="subheading">부동산은 성적순일까? 오픈</h4>
-                                </div>
-                                <div class="timeline-body">
-                                    <p class="text-muted">국토부 부동산 실거래가 데이터와 학교 알리미의 공개정보를 활용한 시각화 작업</p>
-                                </div>
-                            </div>
-                        </li>
-                        
-                    </ul>
-                </div>
-            </div>
-        </div>
-    </section>
-
+    
     <!-- Contact Section -->
     <section id="contact">
         <div class="container">
