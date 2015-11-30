@@ -7811,7 +7811,7 @@ if ( typeof define === 'function' && define.amd ) {
 						continuousWorld: true,
 						worldCopyJump: false,
 						zoomControl: true
-					}).setView([37.49800253054263,127.02608766689583], 6),
+					}).setView([37.53800253054263,127.01608766689583], 5),
 		$scope.focusmap.doubleClickZoom.disable();
 		$scope.focusmap.scrollWheelZoom.disable();
 
@@ -7869,7 +7869,7 @@ if ( typeof define === 'function' && define.amd ) {
 		  		}
 					$timeout(function(){
 						$('html, body').animate({
-				        scrollTop: $("#focuslmap").offset().top
+				        scrollTop: $("#focusmap").offset().top
 				    }, 500);
 					},500);		
 
@@ -8363,10 +8363,18 @@ if ( typeof define === 'function' && define.amd ) {
   	// if(!_.isUndefined($scope.markersref['c'].cluster) && !_.isUndefined($scope.markersref['c'].markers))
 	  // 	$scope.markersref['c'].cluster.removeLayer($scope.markersref['c'].markers);
 
-  	var max = d3.extent(data, function(d){ return d.rn;});
-  	console.log(max);
+  	// var max = d3.extent(data, function(d){ return d.rn;});
+  	// console.log(max);
+  	var max = [1, 3232];
   	$scope.cellgeojson = _.clone(mapGeostruc);
-  	$scope.rnscale = d3.scale.quantize().domain(max).range(['5','4','3','2','1']);
+  	// $scope.rnscale = d3.scale.quantize().domain(max).range(['5','4','3','2','1']);
+  	$scope.rnscale = function(d){
+  		if(d<101) return '5';
+  		else if(d>=101 && d<301) return '4';
+  		else if(d>=301 && d<1001) return '3';
+  		else if(d>=1001 && d<2001) return '2';
+  		else if(d>=2001) return '1';
+  	}
   	$scope.cellgeojson.features = data.map(function(d){ return {"geometry":{"type":"Point","coordinates":[d.lng,d.lat]}, "type":"Feature", "properties":{"badcategory":$scope.rnscale(d.rn),"name":d.name,"addr":d.addr,"rank":d.rn}}});
   	console.log($scope.rnscale(1));console.log($scope.rnscale(324));
   	// console.log(JSON.stringify(cellgeojson));
