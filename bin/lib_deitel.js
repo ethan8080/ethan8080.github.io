@@ -7753,8 +7753,8 @@ if ( typeof define === 'function' && define.amd ) {
 
 		$scope.farea = {};
 	  $scope.farea.itemArray = [
-      {id: 0, name: '서울'},
-      // {id: 1, name: '경기'},
+      {id: 1, name: '서울', latlng:[37.53800253054263,127.01608766689583], zoom: 5},
+      {id: 2, name: '경기', latlng:[37.53800253054263,127.01608766689583], zoom: 3},
     ];
   	$scope.farea.selectedItem = $scope.farea.itemArray[0];
 
@@ -7820,7 +7820,7 @@ if ( typeof define === 'function' && define.amd ) {
 
 		$scope.drawStart = function(){
 			console.log('------> drawStart ');
-			var promise = $sampleservice.listMainMap();
+			var promise = $sampleservice.listMainMap([], $scope.farea.selectedItem.id);
 			promise.then(function(data){
 				// $scope.mapdata = JSON.parse(data[0].m1);
 				$log.log('----$scope.listMainMap in sampleCtrl -----');
@@ -7834,9 +7834,17 @@ if ( typeof define === 'function' && define.amd ) {
 			});
 		};
 		
-
+		// 		$scope.detailmarkerlst=[];
+// 		$scope.drawDetailMap = function(data){
+// 			$scope.detailmarkerlst.forEach(function(d){
+// 				$scope.focusmap.removeLayer(d);	
+// 			});
+		$scope.mainmapmarkerlst = [];
 		$scope.drawMainMap = function(){
-
+			$scope.mainmapmarkerlst.forEach(function(d){
+				$scope.map.removeLayer(d);
+			});
+			$scope.map.setView($scope.farea.selectedItem.latlng, $scope.farea.selectedItem.zoom);
 			// var ext = d3.extent(data,function(d){ return d.value; });
 			// console.log(ext);
 			var options = {
@@ -7880,6 +7888,7 @@ if ( typeof define === 'function' && define.amd ) {
 			// hexLayer.colorScale().range(['#ffeda0','#fed976','#feb24c','#fd8d3c','#fc4e2a','#e31a1c','#bd0026','#800026']);
 			// console.log(data);
 			hexLayer.data($scope.mainmapdata);
+			$scope.mainmapmarkerlst.push(hexLayer);
 
 			$scope.rolledmapdata = d3.nest().key(function(d){ 
 				return Math.round(d.lat*100)/100 ; 
@@ -7887,12 +7896,18 @@ if ( typeof define === 'function' && define.amd ) {
 				return Math.round(d.lng*100)/100 ; 				
 			}).entries($scope.mainmapdata);
 			console.log($scope.rolledmapdata);
+			
 
 		} // end of drawMainMap()
 
+		$scope.schoolmapmarkerlst = [];
 		$scope.drawSchoolGradeMap = function(__data){
 			console.log('$scope.drawSchoolGradeMap--->');
-			console.log(__data);
+			$scope.schoolmapmarkerlst.forEach(function(d){
+				$scope.schoolmap.removeLayer(d);
+			});
+			// console.log(__data);
+			$scope.schoolmap.setView($scope.farea.selectedItem.latlng, $scope.farea.selectedItem.zoom);
 			var options = {
 				radius: 15,
 				opacity: .72,
@@ -7933,13 +7948,17 @@ if ( typeof define === 'function' && define.amd ) {
 			hexLayer.colorScale().range(['#800026','#bd0026','#fc4e2a','#feb24c','#ffeda0']);
 			// hexLayer.colorScale().range(['#ffeda0','#fed976','#feb24c','#fd8d3c','#fc4e2a','#e31a1c','#bd0026','#800026']);
 			// console.log(data);
+			$scope.schoolmapmarkerlst.push(hexLayer);
 			hexLayer.data(__data);
+			
 
 		} // end of drawSchoolMap()
 
+		$scope.gasungbimapmarkerlst = [];
 		$scope.getGasungbiMap = function(){
 			console.log('------> getGasungbiMap ');
-			var promise = $sampleservice.listGasungbiMap();
+
+			var promise = $sampleservice.listGasungbiMap([], $scope.farea.selectedItem.id);
 			promise.then(function(data){
 				// $scope.mapdata = JSON.parse(data[0].m1);
 				$log.log('----$scope.listGasungbiMap in OneCtrl -----');
@@ -7952,6 +7971,11 @@ if ( typeof define === 'function' && define.amd ) {
 
 		$scope.drawGasungbiMap = function(__data){
 			// data
+			$scope.gasungbimapmarkerlst.forEach(function(d){
+				$scope.gasungbimap.removeLayer(d);
+			});
+
+			$scope.gasungbimap.setView($scope.farea.selectedItem.latlng, $scope.farea.selectedItem.zoom);
 			console.log('$scope.drawGasungbiMap --> ');
 			console.log(__data);
 			// refine rn dt
@@ -8001,6 +8025,7 @@ if ( typeof define === 'function' && define.amd ) {
 			hexLayer.colorScale().range(['#800026','#bd0026','#fc4e2a','#feb24c','#ffeda0']);
 			// hexLayer.colorScale().range(['#ffeda0','#fed976','#feb24c','#fd8d3c','#fc4e2a','#e31a1c','#bd0026','#800026']);
 			// console.log(data);
+			$scope.gasungbimapmarkerlst.push(hexLayer);
 			hexLayer.data(__data);
 
 		}
@@ -8343,7 +8368,7 @@ if ( typeof define === 'function' && define.amd ) {
 
 	$scope.getSchoolData = function(){
 		console.log('------> drawSchoolMap ');
-		var promise = $sampleservice.listSchoolMap();
+		var promise = $sampleservice.listSchoolMap([], $scope.farea.selectedItem.id);
 		promise.then(function(data){
 			// $scope.mapdata = JSON.parse(data[0].m1);
 			$log.log('----$scope.getSchoolData in OneCtrl -----');
@@ -8360,8 +8385,8 @@ if ( typeof define === 'function' && define.amd ) {
   $scope.drawSchoolMap = function(data){
   	console.log('--  begin $scope.drawSchoolMap ----> ');
   	// console.log(data);
-  	// if(!_.isUndefined($scope.markersref['c'].cluster) && !_.isUndefined($scope.markersref['c'].markers))
-	  // 	$scope.markersref['c'].cluster.removeLayer($scope.markersref['c'].markers);
+  	if(!_.isUndefined($scope.markersref['c'].cluster) && !_.isUndefined($scope.markersref['c'].markers))
+	  	$scope.markersref['c'].cluster.removeLayer($scope.markersref['c'].markers);
 
   	// var max = d3.extent(data, function(d){ return d.rn;});
   	// console.log(max);
@@ -8571,7 +8596,7 @@ if ( typeof define === 'function' && define.amd ) {
 		var that = this;
 		var deferred = $q.defer();
 		// console.log('ap_group suffix is ' + suffix);
-		var url = $burl.get('/data') + '/jj01.json';
+		var url = $burl.get('/data') + '/jj01_'+suffix+'.json';
 		// console.log('$baseService url is ' + url);
 
 		that.query(q, url, method, function(q, data){
@@ -8591,7 +8616,7 @@ if ( typeof define === 'function' && define.amd ) {
 		var that = this;
 		var deferred = $q.defer();
 		// console.log('ap_group suffix is ' + suffix);
-		var url = $burl.get('/data') + '/jj04.json';
+		var url = $burl.get('/data') + '/jj04_'+suffix+'.json';
 		// console.log('$baseService url is ' + url);
 
 		that.query(q, url, method, function(q, data){
@@ -8611,7 +8636,7 @@ if ( typeof define === 'function' && define.amd ) {
 		var that = this;
 		var deferred = $q.defer();
 		// console.log('ap_group suffix is ' + suffix);
-		var url = $burl.get('/data') + '/jj05.json';
+		var url = $burl.get('/data') + '/jj05_'+suffix+'.json';
 		// console.log('$baseService url is ' + url);
 
 		that.query(q, url, method, function(q, data){
