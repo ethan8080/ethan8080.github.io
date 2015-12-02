@@ -7739,8 +7739,8 @@ if ( typeof define === 'function' && define.amd ) {
 
 		$scope.ftype = {};
 	  $scope.ftype.itemArray = [
-      {id: 0, name: '매매'},
-      // {id: 1, name: '전월세'},
+      {id: 1, name: '매매'},
+      {id: 2, name: '전세'},
     ];
   	$scope.ftype.selectedItem = $scope.ftype.itemArray[0];
 
@@ -7820,7 +7820,7 @@ if ( typeof define === 'function' && define.amd ) {
 
 		$scope.drawStart = function(){
 			console.log('------> drawStart ');
-			var promise = $sampleservice.listMainMap([], $scope.farea.selectedItem.id);
+			var promise = $sampleservice.listMainMap([], $scope.farea.selectedItem.id+'_'+$scope.ftype.selectedItem.id);
 			promise.then(function(data){
 				// $scope.mapdata = JSON.parse(data[0].m1);
 				$log.log('----$scope.listMainMap in sampleCtrl -----');
@@ -7958,7 +7958,7 @@ if ( typeof define === 'function' && define.amd ) {
 		$scope.getGasungbiMap = function(){
 			console.log('------> getGasungbiMap ');
 
-			var promise = $sampleservice.listGasungbiMap([], $scope.farea.selectedItem.id);
+			var promise = $sampleservice.listGasungbiMap([], $scope.farea.selectedItem.id+'_'+$scope.ftype.selectedItem.id);
 			promise.then(function(data){
 				// $scope.mapdata = JSON.parse(data[0].m1);
 				$log.log('----$scope.listGasungbiMap in OneCtrl -----');
